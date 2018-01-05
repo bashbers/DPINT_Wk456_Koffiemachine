@@ -20,7 +20,7 @@ namespace KoffieMachineDomain
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice + 0.8;
+            return BaseDrink.BaseDrinkPrice + 0.8;
         }
         public override void LogDrinkMaking(ICollection<string> log)
         {

@@ -196,7 +196,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.SugarPrice;
+                RemainingPriceToPay = _selectedDrink.GetPrice() + BaseDrink.SugarPrice;
                 LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
@@ -221,7 +221,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.MilkPrice;
+                RemainingPriceToPay = _selectedDrink.GetPrice() + BaseDrink.MilkPrice;
                 LogText.Add($"Selected {_selectedDrink.Name} with milk, price: {RemainingPriceToPay}");
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
@@ -235,12 +235,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             RemainingPriceToPay = 0;
             switch (drinkName)
             {
-                case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
-                    break;
-                case "Espresso":
-                    _selectedDrink = new Espresso() { HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
-                    break;
+
                 default:
                     LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
                     break;
@@ -248,7 +243,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.SugarPrice + Drink.MilkPrice;
+                RemainingPriceToPay = _selectedDrink.GetPrice() + BaseDrink.SugarPrice + BaseDrink.MilkPrice;
                 LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: {RemainingPriceToPay}");
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);

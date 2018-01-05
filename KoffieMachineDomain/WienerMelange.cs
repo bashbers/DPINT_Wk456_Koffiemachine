@@ -18,7 +18,7 @@ namespace KoffieMachineDomain
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice * 2;
+            return BaseDrink.BaseDrinkPrice * 2;
         }
     }
 }

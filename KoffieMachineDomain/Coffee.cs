@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
-    public class Coffee : Drink
+    public class Coffee : BaseDrink
     {
         
         public virtual bool HasSugar { get; set; }
@@ -15,14 +15,20 @@ namespace KoffieMachineDomain
         public virtual Amount MilkAmount { get; set; }
         public virtual Strength DrinkStrength { get; set; }
 
-        public override string Name => "Koffie";
+        public string Name => "Koffie";
 
-        public override double GetPrice()
+
+        public Coffee()
         {
-            return BaseDrinkPrice;
+            
         }
 
-        public override void LogDrinkMaking(ICollection<string> log)
+        public double GetPrice()
+        {
+            return BaseDrink.BaseDrinkPrice;
+        }
+
+        public void LogDrinkMaking(ICollection<string> log)
         {
             base.LogDrinkMaking(log);
             log.Add($"Setting coffee strength to {DrinkStrength}.");
