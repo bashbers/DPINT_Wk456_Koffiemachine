@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
-    public class CashPaymentController
+    using Interface;
+    public class CashPaymentController : IPaymentController
     {
+        public double PayDrink(string name, double remainingPriceToPay)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

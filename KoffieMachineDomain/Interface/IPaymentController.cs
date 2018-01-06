@@ -8,6 +8,6 @@ namespace KoffieMachineDomain.Interface
 {
     interface IPaymentController
     {
-        void Initialize();
+        double PayDrink(string name, double remainingPriceToPay);
     }
 }

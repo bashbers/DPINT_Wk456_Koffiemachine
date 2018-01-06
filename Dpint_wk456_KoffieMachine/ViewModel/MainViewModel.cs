@@ -2,16 +2,18 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using KoffieMachineDomain;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
 
 namespace Dpint_wk456_KoffieMachine.ViewModel
 {
+    using KoffieMachineDomain.Payments;
+
     public class MainViewModel : ViewModelBase
     {
-        private Dictionary<string, double> _cashOnCards;
+        private CardPaymentController cardPaymentController;
+        private CashPaymentController cashPaymentController;
         public ObservableCollection<string> LogText { get; private set; }
 
         public MainViewModel()
@@ -20,16 +22,17 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             _sugarAmount = Amount.Normal;
             _milkAmount = Amount.Normal;
 
-            LogText = new ObservableCollection<string>();
-            LogText.Add("Starting up...");
-            LogText.Add("Done, what would you like to drink?");
+            LogText = new ObservableCollection<string>
+            {
+                "Starting up...",
+                "Done, what would you like to drink?"
+            };
 
-            _cashOnCards = new Dictionary<string, double>();
-            _cashOnCards["Arjen"] = 5.0;
-            _cashOnCards["Bert"] = 3.5;
-            _cashOnCards["Chris"] = 7.0;
-            _cashOnCards["Daan"] = 6.0;
-            PaymentCardUsernames = new ObservableCollection<string>(_cashOnCards.Keys);
+            cardPaymentController = new CardPaymentController();
+            cashPaymentController = new CashPaymentController();
+
+            
+            PaymentCardUsernames = new ObservableCollection<string>(cardPaymentController.GetCardKeys());
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
         }
 
@@ -48,32 +51,25 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         #region Payment
         public RelayCommand PayByCardCommand => new RelayCommand(() =>
         {
-            PayDrink(payWithCard: true);
+            var insertedMoney = cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
+            //TODO Fix bug when card is out of money.
+            RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
+            LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
+            RaisePropertyChanged(() => PaymentCardRemainingAmount);
         });
 
         public ICommand PayByCoinCommand => new RelayCommand<double>(coinValue =>
         {
-            PayDrink(payWithCard: false, insertedMoney: coinValue);
+            PayDrink(false, coinValue);
         });
 
         private void PayDrink(bool payWithCard, double insertedMoney = 0)
         {
             if (_selectedDrink != null && payWithCard)
             {
-                insertedMoney = _cashOnCards[SelectedPaymentCardUsername];
-                if (RemainingPriceToPay <= insertedMoney)
-                {
-                    _cashOnCards[SelectedPaymentCardUsername] = insertedMoney - RemainingPriceToPay;
-                    RemainingPriceToPay = 0;
-                }
-                else // Pay what you can, fill up with coins later.
-                {
-                    _cashOnCards[SelectedPaymentCardUsername] = 0;
 
-                    RemainingPriceToPay -= insertedMoney;
-                }
-                LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
-                RaisePropertyChanged(() => PaymentCardRemainingAmount);
+                RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
+                
             }
             else if (_selectedDrink != null && !payWithCard)
             {
@@ -90,8 +86,18 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         }
 
 
-        public double PaymentCardRemainingAmount => _cashOnCards.ContainsKey(SelectedPaymentCardUsername ?? "") ? _cashOnCards[SelectedPaymentCardUsername] : 0;
-
+        public double PaymentCardRemainingAmount
+        {
+            get
+            {
+                if (cardPaymentController.GetCardKeys().Contains(SelectedPaymentCardUsername))
+                {
+                    return cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
+                }
+                return 0;
+            }
+        }
+        
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;
         public string SelectedPaymentCardUsername

@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DrinkFactory.cs" />
+    <Compile Include="Factories\DrinkFactory.cs" />
     <Compile Include="Interface\IPaymentController.cs" />
     <Compile Include="Payments\CardPaymentController.cs" />
     <Compile Include="Payments\CashPaymentController.cs" />
@@ -49,15 +49,12 @@
     <Compile Include="DrinkTypes\Tea.cs" />
     <Compile Include="Enumerations\Amount.cs" />
     <Compile Include="BaseDrink.cs" />
-    <Compile Include="BaseDrinkDecorator.cs" />
     <Compile Include="DrinkTypes\CafeAuLait.cs" />
     <Compile Include="DrinkTypes\Capuccino.cs" />
     <Compile Include="DrinkTypes\Coffee.cs" />
-    <Compile Include="Drink.cs" />
     <Compile Include="DrinkTypes\Espresso.cs" />
     <Compile Include="Interface\IDrink.cs" />
     <Compile Include="DrinkDecorators\Milk.cs" />
-    <Compile Include="Payments\BasePaymentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enumerations\Strength.cs" />
     <Compile Include="DrinkDecorators\Sugar.cs" />
