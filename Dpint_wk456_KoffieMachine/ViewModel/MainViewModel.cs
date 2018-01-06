@@ -88,8 +88,6 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             get { return cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername); }
         }
 
-        
-
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;
         public string SelectedPaymentCardUsername
@@ -177,8 +175,6 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             RaisePropertyChanged(() => SelectedDrinkPrice);
 
         });
-
-
 
         public ICommand DrinkWithSugarAndMilkCommand => new RelayCommand<string>((drinkName) =>
         {
