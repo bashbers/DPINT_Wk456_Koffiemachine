@@ -11,7 +11,7 @@ namespace KoffieMachineDomain
         public Milk(BaseDrink drink, Amount milkAmount)
         {
             _nextDrink = drink;
-            drink.MilkAmount = milkAmount;
+            MilkAmount = milkAmount;
             BasePrice += 0.25;
         }
 

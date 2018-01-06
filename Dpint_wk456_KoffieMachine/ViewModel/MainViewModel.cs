@@ -31,7 +31,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             cardPaymentController = new CardPaymentController();
             cashPaymentController = new CashPaymentController();
 
-            
+
             PaymentCardUsernames = new ObservableCollection<string>(cardPaymentController.GetCardKeys());
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
         }
@@ -59,26 +59,20 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             var insertedMoney = cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
             RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
             LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
+            CheckRemainingPriceToPay();
             RaisePropertyChanged(() => PaymentCardRemainingAmount);
         });
 
         public ICommand PayByCoinCommand => new RelayCommand<double>(coinValue =>
         {
-            PayDrink(false, coinValue);
+            RemainingPriceToPay = cashPaymentController.PayDrink(coinValue, RemainingPriceToPay);
+            LogText.Add($"Inserted {coinValue.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
+            CheckRemainingPriceToPay();
+
         });
 
-        private void PayDrink(bool payWithCard, double insertedMoney = 0)
+        private void CheckRemainingPriceToPay()
         {
-            if (_selectedDrink == null)
-            {
-                return;
-            }
-            else if (!payWithCard)
-            {
-                RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
-                LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
-            }
-
             if (RemainingPriceToPay == 0)
             {
                 _selectedDrink.LogDrinkMaking(LogText);
@@ -99,7 +93,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                 return 0;
             }
         }
-        
+
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;
         public string SelectedPaymentCardUsername
@@ -188,7 +182,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
         });
 
-        
+
 
         public ICommand DrinkWithSugarAndMilkCommand => new RelayCommand<string>((drinkName) =>
         {

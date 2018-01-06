@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace KoffieMachineDomain
 {
     using Interface;
-    public class CashPaymentController : IPaymentController
+    public class CashPaymentController
     {
-        public double PayDrink(string name, double remainingPriceToPay)
+        public double PayDrink(double insertedMoney, double remainingPriceToPay)
         {
-            throw new NotImplementedException();
+            return Math.Max(Math.Round(remainingPriceToPay - insertedMoney, 2), 0);
         }
     }
 }
