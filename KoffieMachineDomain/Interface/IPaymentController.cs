@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain
+namespace KoffieMachineDomain.Interface
 {
-    public abstract class Drink
+    interface IPaymentController
     {
+        void Initialize();
     }
 }

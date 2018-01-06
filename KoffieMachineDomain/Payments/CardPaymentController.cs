@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain
+namespace KoffieMachineDomain.Payments
 {
-    public abstract class Drink
+    public class CardPaymentController
     {
+        
     }
 }

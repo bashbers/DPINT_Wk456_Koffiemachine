@@ -34,7 +34,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         }
 
         #region Drink properties to bind to
-        private Drink _selectedDrink;
+        private BaseDrink _selectedDrink;
         public string SelectedDrinkName
         {
             get { return _selectedDrink?.Name; }
@@ -142,29 +142,38 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength };
+                    _selectedDrink = new Coffee(CoffeeStrength);
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso();
+                    _selectedDrink = new Espresso(CoffeeStrength);
                     break;
                 case "Capuccino":
-                    _selectedDrink = new Capuccino();
+                    _selectedDrink = new Capuccino(CoffeeStrength);
                     break;
                 case "Wiener Melange":
-                    _selectedDrink = new WienerMelange();
+                    _selectedDrink = new WienerMelange(CoffeeStrength);
                     break;
                 case "Café au Lait":
-                    _selectedDrink = new CafeAuLait();
+                    _selectedDrink = new CafeAuLait(CoffeeStrength);
+                    break;
+                case "Chocolate":
+                    _selectedDrink = new Chocolate(); //Read coffeestrength as chocolatestrength
+                    break;
+                case "Chocolate Deluxe":
+                    _selectedDrink = new ChocolateDeluxe(); //Read coffeestrength as chocolatestrength
+                    break;
+                case "Tea":
+                    _selectedDrink = new Tea(); //Read coffeestrength as chocolatestrength
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName}, recipe not found.");
                     break;
             }
-            
-            if(_selectedDrink != null)
+
+            if (_selectedDrink != null)
             {
                 RemainingPriceToPay = _selectedDrink.GetPrice();
-                LogText.Add($"Selected {_selectedDrink.Name}, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
                 RaisePropertyChanged(() => SelectedDrinkPrice);
@@ -178,16 +187,19 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new Sugar(new Coffee(CoffeeStrength), SugarAmount);
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso(){ HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new Sugar(new Espresso(CoffeeStrength), SugarAmount );
                     break;
                 case "Capuccino":
-                    _selectedDrink = new Capuccino() { HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new Sugar(new Capuccino(CoffeeStrength), SugarAmount );
                     break;
                 case "Wiener Melange":
-                    _selectedDrink = new WienerMelange() { HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new Sugar( new WienerMelange(CoffeeStrength), SugarAmount );
+                    break;
+                case "Tea":
+                    _selectedDrink = new Sugar(new Tea(), SugarAmount); //Read coffeestrength as chocolatestrength
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName} with sugar, recipe not found.");
@@ -196,8 +208,10 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + BaseDrink.SugarPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                RemainingPriceToPay = _selectedDrink.GetPrice();
+                LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                //_selectedDrink.LogDrinkMaking(LogText);
+
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
                 RaisePropertyChanged(() => SelectedDrinkPrice);
@@ -209,10 +223,10 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasMilk = true, MilkAmount = MilkAmount };
+                    _selectedDrink = new Milk(new Coffee(CoffeeStrength), MilkAmount);
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso() { HasMilk = true, MilkAmount = MilkAmount };
+                    _selectedDrink = new Milk(new Espresso(CoffeeStrength), MilkAmount);
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
@@ -221,8 +235,8 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + BaseDrink.MilkPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with milk, price: {RemainingPriceToPay}");
+                RemainingPriceToPay = _selectedDrink.GetPrice();
+                LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
                 RaisePropertyChanged(() => SelectedDrinkPrice);
@@ -235,7 +249,11 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             RemainingPriceToPay = 0;
             switch (drinkName)
             {
-
+                case "Coffee":
+                    _selectedDrink = new Sugar(new Milk(new Coffee(CoffeeStrength), MilkAmount ), SugarAmount );
+                    break;
+                case "Espresso":
+                    _selectedDrink = new Sugar(new Milk(new Espresso(CoffeeStrength), MilkAmount), SugarAmount); break;
                 default:
                     LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
                     break;
@@ -243,8 +261,8 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + BaseDrink.SugarPrice + BaseDrink.MilkPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: {RemainingPriceToPay}");
+                RemainingPriceToPay = _selectedDrink.GetPrice();
+                LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
                 RaisePropertyChanged(() => SelectedDrinkPrice);

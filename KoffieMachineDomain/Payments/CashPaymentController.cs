@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
-    public abstract class Drink
+    public class CashPaymentController
     {
     }
 }

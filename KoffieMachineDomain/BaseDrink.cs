@@ -10,25 +10,33 @@ namespace KoffieMachineDomain
     public class BaseDrink : IDrink
     {
         public string Name { get; set; }
+
         public double BasePrice { get; set; }
 
-        protected IDrink nextDrink;
+        public Amount MilkAmount { get; set; }
+
+        public Strength CoffeeAmount { get; set; }
+
+        public Amount SugarAmount { get; set; }
+        public static double MilkPrice { get; set; }
+
+        protected IDrink _nextDrink;
 
         public BaseDrink()
         {
+            
             BasePrice = .50;
             Name = "Koffie";
         }
 
-        public double GetPrice()
+        public virtual double GetPrice()
         {
-            return nextDrink.BasePrice + 
+            return BasePrice;
         }
 
-        public ICollection<string> LogDrinkMaking(ICollection<string> log)
+        public virtual ICollection<string> LogDrinkMaking(ICollection<string> log)
         {
-            log.Add("Making base drink..");
-            return nextDrink.LogDrinkMaking(log);
+            return _nextDrink.LogDrinkMaking(log);
         }
     }
 }

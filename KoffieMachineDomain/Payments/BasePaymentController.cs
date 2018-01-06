@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
-    public abstract class Drink
+    using Interface;
+    public abstract class BasePaymentController : IPaymentController
     {
+        public virtual void Initialize()
+        {
+
+        }
     }
 }
