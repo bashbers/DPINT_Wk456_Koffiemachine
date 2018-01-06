@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrinkFactory.cs" />
     <Compile Include="Interface\IPaymentController.cs" />
     <Compile Include="Payments\CardPaymentController.cs" />
     <Compile Include="Payments\CashPaymentController.cs" />
