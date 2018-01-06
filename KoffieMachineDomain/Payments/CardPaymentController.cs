@@ -40,7 +40,7 @@ namespace KoffieMachineDomain.Payments
             {
                 _cashOnCards[name] = 0;
 
-                return insertedMoney;
+                return remainingPriceToPay - insertedMoney;
             }
         }
 

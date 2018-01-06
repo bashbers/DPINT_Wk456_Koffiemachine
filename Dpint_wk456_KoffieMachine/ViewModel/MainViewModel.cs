@@ -51,8 +51,12 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         #region Payment
         public RelayCommand PayByCardCommand => new RelayCommand(() =>
         {
+            if (_selectedDrink == null)
+            {
+                return;
+            }
+
             var insertedMoney = cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
-            //TODO Fix bug when card is out of money.
             RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
             LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
             RaisePropertyChanged(() => PaymentCardRemainingAmount);
@@ -65,19 +69,17 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
         private void PayDrink(bool payWithCard, double insertedMoney = 0)
         {
-            if (_selectedDrink != null && payWithCard)
+            if (_selectedDrink == null)
             {
-
-                RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
-                
+                return;
             }
-            else if (_selectedDrink != null && !payWithCard)
+            else if (!payWithCard)
             {
                 RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
                 LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
             }
 
-            if (_selectedDrink != null && RemainingPriceToPay == 0)
+            if (RemainingPriceToPay == 0)
             {
                 _selectedDrink.LogDrinkMaking(LogText);
                 LogText.Add("------------------");
