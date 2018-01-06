@@ -31,7 +31,6 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             cardPaymentController = new CardPaymentController();
             cashPaymentController = new CashPaymentController();
 
-
             PaymentCardUsernames = new ObservableCollection<string>(cardPaymentController.GetCardKeys());
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
         }
@@ -58,6 +57,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             var insertedMoney = cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
             RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
+
             LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
             CheckRemainingPriceToPay();
             RaisePropertyChanged(() => PaymentCardRemainingAmount);
@@ -66,6 +66,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         public ICommand PayByCoinCommand => new RelayCommand<double>(coinValue =>
         {
             RemainingPriceToPay = cashPaymentController.PayDrink(coinValue, RemainingPriceToPay);
+
             LogText.Add($"Inserted {coinValue.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
             CheckRemainingPriceToPay();
 
@@ -84,15 +85,10 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
         public double PaymentCardRemainingAmount
         {
-            get
-            {
-                if (cardPaymentController.GetCardKeys().Contains(SelectedPaymentCardUsername))
-                {
-                    return cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
-                }
-                return 0;
-            }
+            get { return cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername); }
         }
+
+        
 
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;

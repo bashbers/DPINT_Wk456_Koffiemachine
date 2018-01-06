@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
-    using Interface;
     public class CashPaymentController
     {
         public double PayDrink(double insertedMoney, double remainingPriceToPay)
