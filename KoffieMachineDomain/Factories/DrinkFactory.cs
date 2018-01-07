@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
+    using System.Dynamic;
+    using DrinkTypes;
     using Interface;
+    using TeaAndChocoLibrary;
 
     public class DrinkFactory
     {
@@ -25,11 +28,14 @@ namespace KoffieMachineDomain
                 case "Café au Lait":
                     return new CafeAuLait(strength);
                 case "Chocolate":
-                    return new Chocolate();
+                    return new HotChocolateWrapper(new HotChocolate());
                 case "Chocolate Deluxe":
-                    return new ChocolateDeluxe();
+                    return new HotChocolateDeluxeWrapper(new HotChocolate());
                 case "Tea":
-                    return new Tea();
+                    return new TeaWrapper(new Tea()
+                    {
+                        Blend = new TeaBlendRepository().GetTeaBlend("Mango")
+                    });
                 default:
                     return null;
             }
@@ -47,7 +53,11 @@ namespace KoffieMachineDomain
                 case "Wiener Melange":
                     return new Sugar(new WienerMelange(strength), sugarAmount);
                 case "Tea":
-                    return new Sugar(new Tea(), sugarAmount); //Read coffeestrength as chocolatestrength
+                    return new Sugar(new TeaWrapper(new Tea()
+                    {
+                        Blend = new TeaBlendRepository().GetTeaBlend("Mango")
+                    }), 
+                    sugarAmount);
                 default:
                     return null;
             }

@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 namespace Dpint_wk456_KoffieMachine.ViewModel
 {
+    using KoffieMachineDomain.Enumerations;
     using KoffieMachineDomain.Payments;
 
     public class MainViewModel : ViewModelBase
@@ -131,64 +132,33 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             set { _milkAmount = value; RaisePropertyChanged(() => MilkAmount); }
         }
 
-        public ICommand DrinkCommand => new RelayCommand<string>((drinkName) =>
+        public ICommand DrinkCommand => new RelayCommand<DrinkInformation>((info) => //left here
         {
-            _selectedDrink = DrinkFactory.CreateDrink(drinkName, CoffeeStrength);
 
-            if (CheckSelectedDrink(drinkName))
+            switch (info.Type)
+            {
+                case DrinkTypes.Normal:
+                    _selectedDrink = DrinkFactory.CreateDrink(info.Name, CoffeeStrength);
+                    break;
+                case DrinkTypes.Sugar:
+                    _selectedDrink = DrinkFactory.CreateSugarDrink(info.Name, CoffeeStrength, SugarAmount);
+                    break;
+                case DrinkTypes.Milk:
+                    _selectedDrink = DrinkFactory.CreateMilkDrink(info.Name, CoffeeStrength, MilkAmount);
+                    break;
+                case DrinkTypes.SugarMilk:
+                    _selectedDrink = DrinkFactory.CreateSugarAndMilkDrink(info.Name, CoffeeStrength, MilkAmount, SugarAmount);
+                    break;
+            }
+
+            if (CheckSelectedDrink(info.Name))
                 return;
 
             RemainingPriceToPay = _selectedDrink.GetPrice();
-            LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+            LogText.Add($"Selected {SelectedDrinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
             RaisePropertyChanged(() => RemainingPriceToPay);
             RaisePropertyChanged(() => SelectedDrinkName);
             RaisePropertyChanged(() => SelectedDrinkPrice);
-        });
-
-        public ICommand DrinkWithSugarCommand => new RelayCommand<string>((drinkName) =>
-        {
-            _selectedDrink = DrinkFactory.CreateSugarDrink(drinkName, CoffeeStrength, SugarAmount);
-
-            if (CheckSelectedDrink(drinkName))
-                return;
-
-            RemainingPriceToPay = _selectedDrink.GetPrice();
-            LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
-
-            RaisePropertyChanged(() => RemainingPriceToPay);
-            RaisePropertyChanged(() => SelectedDrinkName);
-            RaisePropertyChanged(() => SelectedDrinkPrice);
-
-        });
-
-        public ICommand DrinkWithMilkCommand => new RelayCommand<string>((drinkName) =>
-        {
-            _selectedDrink = DrinkFactory.CreateMilkDrink(drinkName, CoffeeStrength, MilkAmount);
-
-            if (CheckSelectedDrink(drinkName))
-                return;
-
-            RemainingPriceToPay = _selectedDrink.GetPrice();
-            LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
-            RaisePropertyChanged(() => RemainingPriceToPay);
-            RaisePropertyChanged(() => SelectedDrinkName);
-            RaisePropertyChanged(() => SelectedDrinkPrice);
-
-        });
-
-        public ICommand DrinkWithSugarAndMilkCommand => new RelayCommand<string>((drinkName) =>
-        {
-            _selectedDrink = DrinkFactory.CreateSugarAndMilkDrink(drinkName, CoffeeStrength, MilkAmount, SugarAmount);
-
-            if (CheckSelectedDrink(drinkName))
-                return;
-
-            RemainingPriceToPay = _selectedDrink.GetPrice();
-            LogText.Add($"Selected {drinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
-            RaisePropertyChanged(() => RemainingPriceToPay);
-            RaisePropertyChanged(() => SelectedDrinkName);
-            RaisePropertyChanged(() => SelectedDrinkPrice);
-
         });
 
         //Helper method

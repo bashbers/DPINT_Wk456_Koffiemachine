@@ -38,17 +38,22 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TeaAndChocoLibrary">
+      <HintPath>..\TeaAndChocoLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\DrinkInformation.cs" />
+    <Compile Include="DrinkTypes\HotChocolateDeluxeWrapper.cs" />
+    <Compile Include="DrinkTypes\HotChocolateWrapper.cs" />
+    <Compile Include="DrinkTypes\TeaWrapper.cs" />
+    <Compile Include="Enumerations\DrinkTypes.cs" />
     <Compile Include="Factories\DrinkFactory.cs" />
     <Compile Include="Interface\IPaymentController.cs" />
     <Compile Include="Payments\CardPaymentController.cs" />
     <Compile Include="Payments\CashPaymentController.cs" />
-    <Compile Include="DrinkTypes\Chocolate.cs" />
-    <Compile Include="DrinkTypes\ChocolateDeluxe.cs" />
-    <Compile Include="DrinkTypes\Tea.cs" />
     <Compile Include="Enumerations\Amount.cs" />
-    <Compile Include="BaseDrink.cs" />
+    <Compile Include="DrinkTypes\BaseDrink.cs" />
     <Compile Include="DrinkTypes\CafeAuLait.cs" />
     <Compile Include="DrinkTypes\Capuccino.cs" />
     <Compile Include="DrinkTypes\Coffee.cs" />

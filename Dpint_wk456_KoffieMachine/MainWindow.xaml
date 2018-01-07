@@ -7,6 +7,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         xmlns:helpers="clr-namespace:Dpint_wk456_KoffieMachine.Helpers"
+        xmlns:enumerations="clr-namespace:KoffieMachineDomain.Enumerations;assembly=KoffieMachineDomain"
+        xmlns:koffieMachineDomain="clr-namespace:KoffieMachineDomain;assembly=KoffieMachineDomain"
         mc:Ignorable="d"
         Title="MainWindow" Height="620" Width="900"
         DataContext="{Binding Main, Source={StaticResource Locator }}">
@@ -71,68 +73,116 @@
             <Separator />
             <Label Content="Coffee" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="CoffeePanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Coffee" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Coffee" Type="Sugar"/>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee + sugar</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Coffee" Type="Milk"/>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee + milk</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Coffee" Type="SugarMilk"/>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee + sugar + milk</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Espresso" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="EsspressoPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Espresso" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Espresso" Type="Sugar"/>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso + sugar</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Espresso" Type="Milk"/>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso + milk</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Espresso" Type="SugarMilk"/>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso + sugar + milk</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Specialties" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="SpecialtiesPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Capuccino" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Capuccino</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Capuccino" Type="Sugar"/>
+                    </Button.CommandParameter>
                     <TextBlock>Capuccino + sugar</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Wiener Melange" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Wiener Melange" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Wiener Melange</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Café au Lait" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Café au Lait" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Café au Lait</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Chocolate" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="ChocolatePanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Chocolate" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Chocolate" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Chocolate</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Chocolate Deluxe" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Chocolate Deluxe" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Chocolate Deluxe</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Tea" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="TeaPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Tea" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Tea" Type="Normal"/>
+                    </Button.CommandParameter>
                     <TextBlock>Tea</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Tea" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <koffieMachineDomain:DrinkInformation Name="Tea" Type="Sugar"/>
+                    </Button.CommandParameter>
                     <TextBlock>Tea + sugar</TextBlock>
                 </Button>
             </StackPanel>
@@ -195,3 +245,4 @@
         </StackPanel>
     </Grid>
 </Window>
+
