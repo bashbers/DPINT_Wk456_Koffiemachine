@@ -18,6 +18,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         private CardPaymentController cardPaymentController;
         private CashPaymentController cashPaymentController;
         private TeaBlendRepository teaBlendRepository;
+        private CultureInfo currentCulture;
         public ObservableCollection<string> LogText { get; private set; }
 
         public MainViewModel()
@@ -42,6 +43,13 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             TeaBlendNames = new ObservableCollection<string>(teaBlendRepository.BlendNames);
             SelectedTeaBlend = TeaBlendNames[0];
+
+            //Puts euro sign at the front of the numbers instead of behind them.
+            currentCulture = new CultureInfo("nl-NL");
+            currentCulture.NumberFormat.CurrencyPositivePattern = 0;
+            currentCulture.NumberFormat.CurrencyNegativePattern = 2;
+            currentCulture.NumberFormat.CurrencyDecimalSeparator = ".";
+
         }
 
         #region Drink properties to bind to
@@ -67,7 +75,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             var insertedMoney = cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername);
             RemainingPriceToPay = cardPaymentController.PayDrink(SelectedPaymentCardUsername, RemainingPriceToPay);
 
-            LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
+            LogText.Add($"Inserted {insertedMoney.ToString("C", currentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", currentCulture)}.");
             CheckRemainingPriceToPay();
             RaisePropertyChanged(() => PaymentCardRemainingAmount);
         });
@@ -76,7 +84,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         {
             RemainingPriceToPay = cashPaymentController.PayDrink(coinValue, RemainingPriceToPay);
 
-            LogText.Add($"Inserted {coinValue.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
+            LogText.Add($"Inserted {coinValue.ToString("C", currentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", currentCulture)}.");
             CheckRemainingPriceToPay();
 
         });
@@ -163,22 +171,22 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                 case DrinkTypes.Normal:
                     _selectedDrink = DrinkFactory.CreateDrink(info, CoffeeStrength);
                     RemainingPriceToPay = _selectedDrink.GetPrice();
-                    LogText.Add($"Selected {SelectedDrinkName}, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                    LogText.Add($"Selected {SelectedDrinkName}, price: {RemainingPriceToPay.ToString("C", currentCulture)}");
                     break;
                 case DrinkTypes.Sugar:
                     _selectedDrink = DrinkFactory.CreateSugarDrink(info, CoffeeStrength, SugarAmount);
                     RemainingPriceToPay = _selectedDrink.GetPrice();
-                    LogText.Add($"Selected {SelectedDrinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                    LogText.Add($"Selected {SelectedDrinkName} with sugar, price: {RemainingPriceToPay.ToString("C", currentCulture)}");
                     break;
                 case DrinkTypes.Milk:
                     _selectedDrink = DrinkFactory.CreateMilkDrink(info.Name, CoffeeStrength, MilkAmount);
                     RemainingPriceToPay = _selectedDrink.GetPrice();
-                    LogText.Add($"Selected {SelectedDrinkName} with milk, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                    LogText.Add($"Selected {SelectedDrinkName} with milk, price: {RemainingPriceToPay.ToString("C", currentCulture)}");
                     break;
                 case DrinkTypes.SugarMilk:
                     _selectedDrink = DrinkFactory.CreateSugarAndMilkDrink(info.Name, CoffeeStrength, MilkAmount, SugarAmount);
                     RemainingPriceToPay = _selectedDrink.GetPrice();
-                    LogText.Add($"Selected {SelectedDrinkName} with sugar & milk, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
+                    LogText.Add($"Selected {SelectedDrinkName} with sugar & milk, price: {RemainingPriceToPay.ToString("C", currentCulture)}");
                     break;
             }
 
