@@ -8,14 +8,12 @@ namespace KoffieMachineDomain
 {
     public class Coffee : BaseDrink
     {
-       
+
         public virtual Strength DrinkStrength { get; set; }
-
-        public string Name => "Coffee";
-
 
         public Coffee(Strength coffeeStrength)
         {
+            Name = "Coffee";
             DrinkStrength = coffeeStrength;
             BasePrice = 1.50;
         }

@@ -8,11 +8,14 @@ namespace KoffieMachineDomain
 {
     public class Sugar : BaseDrink
     {
+
         public Sugar(BaseDrink drink, Amount sugarAmount)
         {
             _nextDrink = drink;
             SugarAmount = sugarAmount;
             BasePrice = 0.15;
+            Name = _nextDrink.Name;
+
         }
 
         public override double GetPrice()
@@ -26,5 +29,6 @@ namespace KoffieMachineDomain
             log.Add("Adding sugar...");
             return base.LogDrinkMaking(log);
         }
+
     }
 }

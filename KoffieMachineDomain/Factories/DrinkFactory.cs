@@ -13,9 +13,9 @@ namespace KoffieMachineDomain
 
     public class DrinkFactory
     {
-        public static BaseDrink CreateDrink(string arg, Strength strength)
+        public static BaseDrink CreateDrink(DrinkInformation info, Strength strength)
         {
-            switch (arg)
+            switch (info.Name)
             {
                 case "Coffee":
                     return new Coffee(strength);
@@ -34,15 +34,15 @@ namespace KoffieMachineDomain
                 case "Tea":
                     return new TeaWrapper(new Tea()
                     {
-                        Blend = new TeaBlendRepository().GetTeaBlend("Mango")
+                        Blend = info.Blend
                     });
                 default:
                     return null;
             }
         }
-        public static BaseDrink CreateSugarDrink(string arg, Strength strength, Amount sugarAmount)
+        public static BaseDrink CreateSugarDrink(DrinkInformation info, Strength strength, Amount sugarAmount)
         {
-            switch (arg)
+            switch (info.Name)
             {
                 case "Coffee":
                     return new Sugar(new Coffee(strength), sugarAmount);
@@ -55,7 +55,7 @@ namespace KoffieMachineDomain
                 case "Tea":
                     return new Sugar(new TeaWrapper(new Tea()
                     {
-                        Blend = new TeaBlendRepository().GetTeaBlend("Mango")
+                        Blend = info.Blend
                     }), 
                     sugarAmount);
                 default:

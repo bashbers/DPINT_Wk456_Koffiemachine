@@ -8,13 +8,16 @@ using System.Windows.Input;
 
 namespace Dpint_wk456_KoffieMachine.ViewModel
 {
+    using System.Windows;
     using KoffieMachineDomain.Enumerations;
     using KoffieMachineDomain.Payments;
+    using TeaAndChocoLibrary;
 
     public class MainViewModel : ViewModelBase
     {
         private CardPaymentController cardPaymentController;
         private CashPaymentController cashPaymentController;
+        private TeaBlendRepository teaBlendRepository;
         public ObservableCollection<string> LogText { get; private set; }
 
         public MainViewModel()
@@ -34,6 +37,11 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
             PaymentCardUsernames = new ObservableCollection<string>(cardPaymentController.GetCardKeys());
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
+
+            teaBlendRepository = new TeaBlendRepository();
+
+            TeaBlendNames = new ObservableCollection<string>(teaBlendRepository.BlendNames);
+            SelectedTeaBlend = TeaBlendNames[0];
         }
 
         #region Drink properties to bind to
@@ -83,7 +91,6 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             }
         }
 
-
         public double PaymentCardRemainingAmount
         {
             get { return cardPaymentController.GetCardAmountLeft(SelectedPaymentCardUsername); }
@@ -132,34 +139,57 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             set { _milkAmount = value; RaisePropertyChanged(() => MilkAmount); }
         }
 
-        public ICommand DrinkCommand => new RelayCommand<DrinkInformation>((info) => //left here
+        private string _selectedTeaBlend;
+        public string SelectedTeaBlend
         {
+            get { return _selectedTeaBlend; }
+            set { _selectedTeaBlend = value; RaisePropertyChanged(() => SelectedTeaBlend); }
+        }
+
+        private ObservableCollection<string> _teaBlendNames;
+
+        public ObservableCollection<string> TeaBlendNames
+        {
+            get { return _teaBlendNames; }
+            set { _teaBlendNames = value; RaisePropertyChanged(() => TeaBlendNames); }
+        }
+
+        public ICommand DrinkCommand => new RelayCommand<DrinkInformation>((info) =>
+        {
+            info.Blend = teaBlendRepository.GetTeaBlend(SelectedTeaBlend);
 
             switch (info.Type)
             {
                 case DrinkTypes.Normal:
-                    _selectedDrink = DrinkFactory.CreateDrink(info.Name, CoffeeStrength);
+                    _selectedDrink = DrinkFactory.CreateDrink(info, CoffeeStrength);
+                    RemainingPriceToPay = _selectedDrink.GetPrice();
+                    LogText.Add($"Selected {SelectedDrinkName}, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                     break;
                 case DrinkTypes.Sugar:
-                    _selectedDrink = DrinkFactory.CreateSugarDrink(info.Name, CoffeeStrength, SugarAmount);
+                    _selectedDrink = DrinkFactory.CreateSugarDrink(info, CoffeeStrength, SugarAmount);
+                    RemainingPriceToPay = _selectedDrink.GetPrice();
+                    LogText.Add($"Selected {SelectedDrinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                     break;
                 case DrinkTypes.Milk:
                     _selectedDrink = DrinkFactory.CreateMilkDrink(info.Name, CoffeeStrength, MilkAmount);
+                    RemainingPriceToPay = _selectedDrink.GetPrice();
+                    LogText.Add($"Selected {SelectedDrinkName} with milk, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                     break;
                 case DrinkTypes.SugarMilk:
                     _selectedDrink = DrinkFactory.CreateSugarAndMilkDrink(info.Name, CoffeeStrength, MilkAmount, SugarAmount);
+                    RemainingPriceToPay = _selectedDrink.GetPrice();
+                    LogText.Add($"Selected {SelectedDrinkName} with sugar & milk, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
                     break;
             }
 
             if (CheckSelectedDrink(info.Name))
                 return;
-
-            RemainingPriceToPay = _selectedDrink.GetPrice();
-            LogText.Add($"Selected {SelectedDrinkName} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
             RaisePropertyChanged(() => RemainingPriceToPay);
             RaisePropertyChanged(() => SelectedDrinkName);
             RaisePropertyChanged(() => SelectedDrinkPrice);
         });
+
+        
 
         //Helper method
         private bool CheckSelectedDrink(string drinkName)

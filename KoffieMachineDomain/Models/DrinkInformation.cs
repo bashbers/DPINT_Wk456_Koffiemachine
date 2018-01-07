@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain
 {
+    using TeaAndChocoLibrary;
+
     public class DrinkInformation
     {
         public string Name { get; set; }
         public Enumerations.DrinkTypes Type { get; set; }
+        public TeaBlend Blend { get; set; }
     }
 }

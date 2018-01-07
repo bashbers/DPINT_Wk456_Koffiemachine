@@ -11,11 +11,9 @@ namespace KoffieMachineDomain
 
         public virtual Strength DrinkStrength { get; set; }
 
-        public string Name => "Espresso";
-
-
         public Espresso(Strength coffeeStrength)
         {
+            Name = "Espresso";
             DrinkStrength = coffeeStrength;
             BasePrice = 2.50;
         }

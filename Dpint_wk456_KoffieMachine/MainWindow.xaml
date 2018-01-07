@@ -185,6 +185,10 @@
                     </Button.CommandParameter>
                     <TextBlock>Tea + sugar</TextBlock>
                 </Button>
+                <StackPanel>
+                    <TextBlock TextAlignment="Center" Margin="7"> Tea Blend</TextBlock>
+                    <ComboBox ItemsSource="{Binding TeaBlendNames}" SelectedValue="{Binding SelectedTeaBlend}" Width="100"  MaxHeight="25"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5" Name="Payment">

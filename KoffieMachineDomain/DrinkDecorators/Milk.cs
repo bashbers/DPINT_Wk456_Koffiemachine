@@ -8,11 +8,13 @@ namespace KoffieMachineDomain
 {
     public class Milk : BaseDrink
     {
+
         public Milk(BaseDrink drink, Amount milkAmount)
         {
             _nextDrink = drink;
             MilkAmount = milkAmount;
             BasePrice += 0.25;
+            Name = _nextDrink.Name;
         }
 
         public override double GetPrice()

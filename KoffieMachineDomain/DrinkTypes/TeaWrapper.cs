@@ -27,7 +27,7 @@ namespace KoffieMachineDomain.DrinkTypes
         public override ICollection<string> LogDrinkMaking(ICollection<string> log)
         {
             log.Add("Filling with hot water...");
-            log.Add($"Finished making {Name}");
+            log.Add($"Finished making {Name} with {TeaBlend.Name}");
             return log;
         }
     }
